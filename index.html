@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Giorgio Armani - Private Event</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Montserrat:wght@100;200;300;400;500;700&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --champagne-gold: #c8a45d;
+      --muted-gold: #b89b5e;
+      --off-white: #e6e6e6;
+      --deep-black: #0f0f10;
+      --card-dark: #1a1a1a;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: var(--deep-black);
+      color: var(--off-white);
+      position: fixed;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+    #root {
+      height: 100dvh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .font-bodoni { font-family: 'Bodoni Moda', serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .font-garamond { font-family: 'Cormorant Garamond', serif; }
+
+    /* ANIMATIONS */
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    @keyframes softFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes shine-gold {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes gold-dust {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .animate-page-entry {
+      animation: revealUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .gold-dust-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .dust-particle {
+      position: absolute;
+      background: var(--champagne-gold);
+      border-radius: 50%;
+      filter: blur(1px);
+      opacity: 0;
+      animation: gold-dust linear infinite;
+    }
+
+    .gold-shine {
+      background: linear-gradient(90deg, #5c4a2a, #c8a45d, #f2e1c1, #c8a45d, #5c4a2a);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine-gold 8s linear infinite;
+    }
+    
+    .armani-bg {
+      background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+    }
+
+    .luxury-grain {
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      width: 150vw;
+      height: 150vh;
+      top: -25%;
+      left: -25%;
+      background: radial-gradient(circle at center, rgba(200, 164, 93, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    ::-webkit-scrollbar { display: none; }
+    * { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+<body class="armani-bg select-none">
+  <div class="ambient-glow"></div>
+  <div class="gold-dust-container" id="gold-dust"></div>
+  <div class="luxury-grain"></div>
+  <div id="root"></div>
+
+  <script>
+    // Create gold dust particles
+    const container = document.getElementById('gold-dust');
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'dust-particle';
+      const size = Math.random() * 3 + 1;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+      particle.style.animationDelay = `${Math.random() * 10}s`;
+      container.appendChild(particle);
+    }
+  </script>
+  <script type="module" src="index.tsx"></script>
+</body>
+</html>
