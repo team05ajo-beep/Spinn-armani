@@ -4,10 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-    'process.env': {
-      API_KEY: JSON.stringify(process.env.API_KEY || '')
-    }
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || '')
   },
   server: {
     host: true
@@ -17,7 +14,6 @@ export default defineConfig({
     sourcemap: false,
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      input: './index.html',
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
