@@ -22,7 +22,6 @@
       overflow: hidden;
       background-color: var(--deep-black);
       color: var(--off-white);
-      position: fixed;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -30,11 +29,10 @@
       overscroll-behavior: none;
     }
     #root {
-      height: 100dvh;
+      min-height: 100vh;
       width: 100%;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
     .font-bodoni { font-family: 'Bodoni Moda', serif; }
     .font-montserrat { font-family: 'Montserrat', sans-serif; }
@@ -148,6 +146,7 @@
       }
     }
   </script>
-  <script type="module" src="/index.tsx"></script>
+  <!-- Path script harus menggunakan ./ agar relatif terhadap root di Vite -->
+  <script type="module" src="./index.tsx"></script>
 </body>
 </html>
